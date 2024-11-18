@@ -7,6 +7,7 @@ import {
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { useCallback, useEffect } from 'react';
 import { deleteContactById, fetchingAllContacts } from '../../store/thunks/contactThunks';
+import { NavLink } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,6 @@ const Home = () => {
 
   return (
     <div>
-
       {fetchLoading || deleteLoading ? <Spinner/> :
         <>
           {allContacts.length === 0 ? <p>No Contacts yet</p> :
@@ -51,7 +51,7 @@ const Home = () => {
                     </div>
                     <div>
                       <button type='button' className="btn btn-danger w-25 mx-3" onClick={() => deleteContact(contact.id)}>Delete</button>
-                      <button className="btn btn-dark w-25">Edit</button>
+                      <NavLink to={`/edit-contact/${contact.id}`} className="btn btn-primary w-25">Edit</NavLink>
                     </div>
                   </div>
                 </div>

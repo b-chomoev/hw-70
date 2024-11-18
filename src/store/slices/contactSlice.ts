@@ -1,29 +1,44 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addNewContact, deleteContactById, fetchingAllContacts } from '../thunks/contactThunks';
+import {
+  addNewContact,
+  deleteContactById,
+  editContact,
+  fetchingAllContacts,
+  getOneContactById
+} from '../thunks/contactThunks';
 import { RootState } from '../../app/store';
 
 interface ContactState {
   contacts: IContact[],
+  oneContact: IContact | null,
   loading: {
     isFetching: boolean,
+    isOneFetching: boolean,
     isAdding: boolean,
     isDeleting: boolean,
+    isEditing: boolean,
   }
 }
 
 const initialState: ContactState = {
   contacts: [],
+  oneContact: null,
   loading: {
     isFetching: false,
+    isOneFetching: false,
     isAdding: false,
     isDeleting: false,
+    isEditing: false,
   }
 }
 
 export const selectAddContactLoading = (state: RootState) => state.contact.loading.isAdding;
 export const selectFetchingContactsLoading = (state: RootState) => state.contact.loading.isFetching;
+export const selectOneFetchingContactsLoading = (state: RootState) => state.contact.loading.isOneFetching;
 export const selectDeleteContactLoading = (state: RootState) => state.contact.loading.isDeleting;
 export const selectAllContacts = (state: RootState) => state.contact.contacts;
+export const selectOneContact = (state: RootState) => state.contact.oneContact;
+export const selectEditContactLoading = (state: RootState) => state.contact.loading.isEditing;
 
 export const contactSlice = createSlice({
   name: 'contact',
@@ -58,6 +73,26 @@ export const contactSlice = createSlice({
       })
       .addCase(deleteContactById.rejected, (state) => {
         state.loading.isDeleting = false;
+      })
+      .addCase(getOneContactById.pending, (state) => {
+        state.loading.isOneFetching = true;
+      })
+      .addCase(getOneContactById.fulfilled, (state, action: PayloadAction<IContact | null>) => {
+        state.loading.isOneFetching = false;
+        state.oneContact = action.payload;
+      })
+      .addCase(getOneContactById.rejected, (state) => {
+        state.loading.isOneFetching = false;
+      })
+      .addCase(editContact.pending, (state) => {
+        state.loading.isEditing = true;
+      })
+      .addCase(editContact.fulfilled, (state) => {
+        state.loading.isEditing = false;
+        state.oneContact = null;
+      })
+      .addCase(editContact.rejected, (state) => {
+        state.loading.isEditing = false;
       })
   }
 })
