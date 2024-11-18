@@ -42,7 +42,7 @@ const NewContactForm = () => {
     <form onSubmit={onSubmit}>
       <h3>Add new contact</h3>
       <div className='mb-2 w-50'>
-        <label htmlFor="">Name: </label>
+        <label htmlFor=""> Full Name: </label>
         <input
           type="text"
           name='name'
