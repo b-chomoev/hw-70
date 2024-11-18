@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectAddContactLoading } from '../../store/slices/contactSlice';
 import { addNewContact } from '../../store/thunks/contactThunks';
 import { useNavigate } from 'react-router-dom';
-import Spinner from '../../components/UI/Spinner';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 const initialState = {
   name: '',

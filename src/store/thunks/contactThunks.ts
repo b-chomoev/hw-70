@@ -25,3 +25,17 @@ export const fetchingAllContacts = createAsyncThunk<IContact[], void>(
     return [];
   }
 );
+
+export const deleteContactById = createAsyncThunk<void, string>(
+  'contact/deleteContact',
+  async (id: string) => {
+    await axiosAPI.delete(`contact/${id}.json`);
+  }
+);
+
+export const getOneContactById = createAsyncThunk(
+  'contact/getOneContactById',
+  async (id) => {
+    const response = await axiosAPI.get<IContact>(`contact/${id}.json`);
+  }
+)
