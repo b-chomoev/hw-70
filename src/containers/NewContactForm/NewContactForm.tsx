@@ -89,8 +89,17 @@ const NewContactForm = () => {
         />
       </div>
 
+      <div className='mb-2 w-50'>
+        <label htmlFor=''>Photo preview: </label>
+        {contact.photo ?
+          <div className="mt-2"><img src={contact.photo} alt="Contact Photo" className="w-25"/></div>
+          :
+          <div className='fw-bold'> Here is going to be photo preview</div>
+        }
+      </div>
+
       <div>
-        <button disabled={addLoading} className='btn btn-dark'>Save</button>
+        <button disabled={addLoading} className="btn btn-dark">Save</button>
         {addLoading ? <Spinner/> : null}
       </div>
 
