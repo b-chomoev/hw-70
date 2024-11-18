@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { addNewContact } from '../thunks/contactThunks';
+import { RootState } from '../../app/store';
 
 interface ContactState {
   contacts: IContact[],
@@ -16,10 +18,24 @@ const initialState: ContactState = {
   }
 }
 
+export const selectAddContactLoading = (state: RootState) => state.contact.loading.isAdding;
+
 export const contactSlice = createSlice({
   name: 'contact',
   initialState,
-  reducers:{}
+  reducers:{},
+  extraReducers: (builder) => {
+    builder
+      .addCase(addNewContact.pending, (state) => {
+        state.loading.isAdding = true;
+      })
+      .addCase(addNewContact.fulfilled, (state) => {
+        state.loading.isAdding = false;
+      })
+      .addCase(addNewContact.rejected, (state) => {
+        state.loading.isAdding = false;
+      })
+  }
 })
 
 export const ContactReducer = contactSlice.reducer;

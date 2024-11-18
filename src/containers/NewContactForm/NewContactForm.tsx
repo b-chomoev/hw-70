@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import * as React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectAddContactLoading } from '../../store/slices/contactSlice';
+import { addNewContact } from '../../store/thunks/contactThunks';
+import { useNavigate } from 'react-router-dom';
+import Spinner from '../../components/UI/Spinner';
 
 const initialState = {
   name: '',
@@ -10,6 +15,9 @@ const initialState = {
 
 const NewContactForm = () => {
   const [contact, setContact] = useState<IContactForm>(initialState);
+  const dispatch = useAppDispatch();
+  const addLoading = useAppSelector(selectAddContactLoading);
+  const navigate = useNavigate();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value, name} = e.target;
@@ -22,10 +30,12 @@ const NewContactForm = () => {
     })
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(contact);
+    await dispatch(addNewContact({...contact}));
+    setContact(initialState);
+    navigate('/');
   }
 
   return (
@@ -79,7 +89,11 @@ const NewContactForm = () => {
         />
       </div>
 
-      <button className='btn btn-dark'>Save</button>
+      <div>
+        <button disabled={addLoading} className='btn btn-dark'>Save</button>
+        {addLoading ? <Spinner/> : null}
+      </div>
+
     </form>
   );
 };
